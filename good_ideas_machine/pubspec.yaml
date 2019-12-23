@@ -27,7 +27,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"
 
+# Set the app icons for both android and ios
+flutter_icons:
+  image_path_android: "app_icons/blur_on-black-android/res/drawable-xxxhdpi/round_blur_on_black_48.png"
+  android: true
+  image_path_ios: "app_icons/blur_on-black-ios/round_blur_on_black_48pt.xcassets/round_blur_on_black_48pt.imageset/round_blur_on_black_48pt_3x.png"
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
