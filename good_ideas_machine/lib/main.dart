@@ -9,21 +9,23 @@ void main() => runApp(GoodIdeasMachine());
 class GoodIdeasMachine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     var appTitle = 'Good Ideas Machine';
 
     return MaterialApp(
-      title: appTitle,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.cyan,
-        accentColor: Colors.cyanAccent,
-        scaffoldBackgroundColor: Colors.indigo[900],
-        tabBarTheme: TabBarTheme(unselectedLabelColor: Colors.cyan,
-            labelColor: Colors.cyanAccent)
-      ),
-      home: HomeScaffold(title: appTitle)
-    );
+        title: appTitle,
+        theme: ThemeData(
+            brightness: Brightness.dark,
+            primaryColor: Colors.cyan,
+            accentColor: Colors.cyanAccent,
+            scaffoldBackgroundColor: Colors.indigo[900],
+            tabBarTheme: TabBarTheme(
+                indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(width: 5.0, color: Colors.indigo),
+                    insets: EdgeInsets.symmetric(horizontal:16.0)
+                ),
+                unselectedLabelColor: Colors.indigo,
+                labelColor: Colors.indigo[900])),
+        home: HomeScaffold(title: appTitle));
   }
 }
 
@@ -53,13 +55,25 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           centerTitle: true,
           title: Text(widget.title),
         ),
-        body: TabBarView(children: _childPages),
-        bottomNavigationBar: TabBar(
-          tabs: [
-            Tab(icon: new Icon(Icons.assignment), text: 'Ideas'),
-            Tab(icon: new Icon(Icons.lightbulb_outline), text: 'New Idea',),
-            Tab(icon: Icon(Icons.group), text: 'Collaborators',),
-          ],
+        body: TabBarView(
+          children: _childPages,
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.cyan,
+          child: TabBar(
+            tabs: [
+              Tab(icon: new Icon(Icons.assignment), text: 'Ideas'),
+              Tab(
+                icon: new Icon(Icons.lightbulb_outline),
+                text: 'New Idea',
+              ),
+              Tab(
+                icon: Icon(Icons.group),
+                text: 'Collaborators',
+              ),
+            ],
+          ),
         ),
       ),
     );
