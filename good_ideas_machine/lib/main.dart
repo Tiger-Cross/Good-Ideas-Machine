@@ -19,6 +19,8 @@ class GoodIdeasMachine extends StatelessWidget {
         primaryColor: Colors.cyan,
         accentColor: Colors.cyanAccent,
         scaffoldBackgroundColor: Colors.indigo[900],
+        tabBarTheme: TabBarTheme(unselectedLabelColor: Colors.cyan,
+            labelColor: Colors.cyanAccent)
       ),
       home: HomeScaffold(title: appTitle)
     );
@@ -35,47 +37,30 @@ class HomeScaffold extends StatefulWidget {
 }
 
 class _HomeScaffoldState extends State<HomeScaffold> {
-  int _currNavIndex = 1;
   final List<Widget> _childPages = [
     IdeasPage(),
     NewIdeaPage(),
     CollaboratorsPage(),
   ];
 
-  void onTabTapped(int index) {
-    setState(() {
-      _currNavIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title),
-      ),
-      body: _childPages[_currNavIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.cyan,
-        selectedItemColor: Colors.indigo[900],
-        unselectedItemColor: Colors.white,
-        currentIndex: _currNavIndex, // this will be set when a new tab is tapped
-        onTap: onTabTapped,
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.assignment),
-            title: new Text('Ideas'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.lightbulb_outline),
-            title: new Text('New Idea'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.group),
-              title: Text('Collaborators')
-          )
-        ],
+    return DefaultTabController(
+      initialIndex: 1,
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(widget.title),
+        ),
+        body: TabBarView(children: _childPages),
+        bottomNavigationBar: TabBar(
+          tabs: [
+            Tab(icon: new Icon(Icons.assignment), text: 'Ideas'),
+            Tab(icon: new Icon(Icons.lightbulb_outline), text: 'New Idea',),
+            Tab(icon: Icon(Icons.group), text: 'Collaborators',),
+          ],
+        ),
       ),
     );
   }
