@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:good_ideas_machine/datamanager.dart';
 
 class NewIdeaPage extends StatefulWidget {
   @override
@@ -6,16 +7,24 @@ class NewIdeaPage extends StatefulWidget {
 }
 
 class _NewIdeaPageState extends State<NewIdeaPage> {
+  double _originalitySliderValue = 0;
+  double _feasibilitySliderValue = 0;
+  double _impactSliderValue = 0;
+
   final _formKey = GlobalKey<FormState>();
   final _ideaTitleController = TextEditingController();
   final _ideaDescController = TextEditingController();
+  final DataManager _dataManager = DataManager();
 
   void submitNewIdea() {
     if (_formKey.currentState.validate()) {
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Processing Data')));
-      print("New idea called: " + _ideaTitleController.text);
-      print("Idea description: " + _ideaDescController.text);
+      var data = _ideaTitleController.text + "\t"
+          + _ideaDescController.text + "\t"
+          + _originalitySliderValue.toString() + "\t"
+          + _feasibilitySliderValue.toString() + "\t"
+          + _impactSliderValue.toString();
+      _dataManager.writeContent(data);
+      // Reset form.
     }
   }
 
@@ -26,9 +35,32 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
     super.dispose();
   }
 
+  Widget ideaRankSlider(String sliderTitle, String sliderDesc, double sliderVal,
+      ValueChanged<double> onChanged) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(sliderTitle),
+        Tooltip(
+            message: sliderDesc,
+            preferBelow: false,
+            child: Slider(
+              label: sliderVal.toString(),
+              divisions: 10,
+              activeColor: Colors.cyan,
+              value: sliderVal,
+              min: 0.0,
+              max: 10.0,
+              onChanged: onChanged,
+            )),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Container(
             padding: EdgeInsets.symmetric(
@@ -38,7 +70,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
                     "Record New Idea",
@@ -62,9 +94,24 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                     decoration: InputDecoration(
                         labelText: 'Idea Description', hintText: '(Optional)'),
                   ),
-                  Slider(value: 0, onChanged: null),
-                  Slider(value: 0, onChanged: null),
-                  Slider(value: 0, onChanged: null),
+                  ideaRankSlider(
+                      "Originality",
+                      "How original you think your idea is on a scale of 1 to 10?",
+                      _originalitySliderValue, (newVal) {
+                    setState(() => _originalitySliderValue = newVal);
+                  }),
+                  ideaRankSlider(
+                      "Feasibility",
+                      "Rank the feasibility of creating your idea",
+                      _feasibilitySliderValue, (newVal) {
+                    setState(() => _feasibilitySliderValue = newVal);
+                  }),
+                  ideaRankSlider(
+                      "Impact",
+                      "What do you think the overall impact would be on others?",
+                      _impactSliderValue, (newVal) {
+                    setState(() => _impactSliderValue = newVal);
+                  }),
                 ],
               ),
             )),

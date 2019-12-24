@@ -51,6 +51,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       initialIndex: 1,
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
           title: Text(widget.title),
