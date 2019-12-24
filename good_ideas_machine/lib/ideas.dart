@@ -15,7 +15,7 @@ class _IdeasPageState extends State<IdeasPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Also Also coming soon...")
+            Text("Coming soon...")
           ],
         ),
       ),
