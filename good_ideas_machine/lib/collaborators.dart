@@ -15,7 +15,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Also coming soon...")
+            Text("Coming soon...")
           ],
         ),
       ),
