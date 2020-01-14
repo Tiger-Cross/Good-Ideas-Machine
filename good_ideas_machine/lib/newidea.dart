@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:good_ideas_machine/datamanager.dart';
 
 class NewIdeaPage extends StatefulWidget {
   @override
@@ -14,18 +14,52 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
   final _formKey = GlobalKey<FormState>();
   final _ideaTitleController = TextEditingController();
   final _ideaDescController = TextEditingController();
-  final DataManager _dataManager = DataManager();
 
   void submitNewIdea() {
     if (_formKey.currentState.validate()) {
-      var data = _ideaTitleController.text + "\t"
-          + _ideaDescController.text + "\t"
-          + _originalitySliderValue.toString() + "\t"
-          + _feasibilitySliderValue.toString() + "\t"
-          + _impactSliderValue.toString();
-      _dataManager.writeContent(data);
-      // Reset form.
+      // TODO; Relate each individual idea to a single user (validator required)
+      Firestore.instance.collection('ideas').add({
+        'title' : _ideaTitleController.text,
+        'description' : _ideaDescController.text,
+        'originalityRating' : _originalitySliderValue.round(),
+        'feasibilityRating' : _feasibilitySliderValue.round(),
+        'impactRating' : _impactSliderValue.round(),
+      });
+      resetForm();
+      _successDialog();
     }
+  }
+
+  void _successDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("That's a Great Idea!"),
+          content: new Text("We'll keep it safe for you. If you fancy " +
+              "checking it out again, adding to it or viewing our stats on it" +
+              " head over to the ideas page on the left."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void resetForm() {
+    _ideaTitleController.clear();
+    _ideaDescController.clear();
+    setState(() {
+      _originalitySliderValue = 0;
+      _feasibilitySliderValue = 0;
+      _impactSliderValue = 0;
+    });
   }
 
   @override
