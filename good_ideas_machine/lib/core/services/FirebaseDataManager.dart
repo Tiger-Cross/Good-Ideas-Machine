@@ -18,20 +18,20 @@ class FirebaseDataManager {
     return ref.snapshots();
   }
 
-  Future<DocumentSnapshot> getDocumentById(String id) {
-    return ref.document(id).get();
+  Future<DocumentSnapshot> getDocumentByTitle(String title) {
+    return ref.document(title).get();
   }
 
-  Future<DocumentReference> addDocument(Map data) {
-    return ref.add(data);
+  Future<void> addDocument(Map data, String title) {
+    return ref.document(title).setData(data);
   }
 
-  Future<void> removeDocument(String id) {
-    return ref.document(id).delete();
+  Future<void> removeDocument(String title) {
+    return ref.document(title).delete();
   }
 
-  Future<void> updateDocument(Map data, String id) {
-    return ref.document(id).updateData(data);
+  Future<void> updateDocument(Map data, String title) {
+    return ref.document(title).updateData(data);
   }
 
 }

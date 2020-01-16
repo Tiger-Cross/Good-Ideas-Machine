@@ -7,7 +7,10 @@ import 'views/ideas.dart';
 import 'views/collaborators.dart';
 import 'views/newidea.dart';
 
-void main() => runApp(GoodIdeasMachine());
+void main() {
+  setupLocator();
+  runApp(GoodIdeasMachine());
+}
 
 class GoodIdeasMachine extends StatelessWidget {
   @override
@@ -16,7 +19,7 @@ class GoodIdeasMachine extends StatelessWidget {
 
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(builder: (_) => locator<IdeasManager>(), create: (BuildContext context) {},)
+          ChangeNotifierProvider<IdeasManager>(create: (_) => IdeasManager())
         ],
         child: MaterialApp(
             title: appTitle,

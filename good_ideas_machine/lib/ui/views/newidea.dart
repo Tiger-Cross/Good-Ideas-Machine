@@ -1,5 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:good_ideas_machine/core/models/Idea.dart';
+import 'package:good_ideas_machine/core/viewmodels/IdeasManager.dart';
+import 'package:provider/provider.dart';
 
 class NewIdeaPage extends StatefulWidget {
   @override
@@ -15,16 +17,17 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
   final _ideaTitleController = TextEditingController();
   final _ideaDescController = TextEditingController();
 
-  void submitNewIdea() {
+  Future<void> submitNewIdea(IdeasManager ideasManager) async {
     if (_formKey.currentState.validate()) {
       // TODO; Relate each individual idea to a single user (validator required)
-      Firestore.instance.collection('ideas').add({
-        'title' : _ideaTitleController.text,
-        'description' : _ideaDescController.text,
-        'originalityRating' : _originalitySliderValue.round(),
-        'feasibilityRating' : _feasibilitySliderValue.round(),
-        'impactRating' : _impactSliderValue.round(),
-      });
+      await ideasManager.addIdea(
+          Idea(
+            title: _ideaTitleController.text,
+            description : _ideaDescController.text,
+            originalityRating: _originalitySliderValue.round(),
+            feasibilityRating: _feasibilitySliderValue.round(),
+            impactRating: _impactSliderValue.round()
+      ), _ideaTitleController.text);
       resetForm();
       _successDialog();
     }
@@ -148,10 +151,14 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
               ),
             )),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: submitNewIdea,
-        tooltip: 'Record Idea',
-        child: Icon(Icons.check),
+      floatingActionButton: Consumer<IdeasManager>(
+        builder: (context, IdeasManager, child) {
+          return FloatingActionButton(
+            onPressed: () => (submitNewIdea(IdeasManager)),
+            tooltip: 'Record Idea',
+            child: Icon(Icons.check),
+          );
+        },
       ),
     );
   }
