@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:good_ideas_machine/core/viewmodels/IdeasManager.dart';
+import 'package:good_ideas_machine/locator.dart';
+import 'package:provider/provider.dart';
 
-import 'ideas.dart';
-import 'collaborators.dart';
-import 'newidea.dart';
+import 'views/ideas.dart';
+import 'views/collaborators.dart';
+import 'views/newidea.dart';
 
 void main() => runApp(GoodIdeasMachine());
 
@@ -11,21 +14,26 @@ class GoodIdeasMachine extends StatelessWidget {
   Widget build(BuildContext context) {
     var appTitle = 'Good Ideas Machine';
 
-    return MaterialApp(
-        title: appTitle,
-        theme: ThemeData(
-            brightness: Brightness.dark,
-            primaryColor: Colors.cyan,
-            accentColor: Colors.cyanAccent,
-            scaffoldBackgroundColor: Colors.indigo[900],
-            tabBarTheme: TabBarTheme(
-                indicator: UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 5.0, color: Colors.indigo),
-                    insets: EdgeInsets.symmetric(horizontal:16.0)
-                ),
-                unselectedLabelColor: Colors.indigo,
-                labelColor: Colors.indigo[900])),
-        home: HomeScaffold(title: appTitle));
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(builder: (_) => locator<IdeasManager>(), create: (BuildContext context) {},)
+        ],
+        child: MaterialApp(
+            title: appTitle,
+            theme: ThemeData(
+                brightness: Brightness.dark,
+                primaryColor: Colors.cyan,
+                accentColor: Colors.cyanAccent,
+                scaffoldBackgroundColor: Colors.indigo[900],
+                tabBarTheme: TabBarTheme(
+                    indicator: UnderlineTabIndicator(
+                        borderSide: BorderSide(width: 5.0, color: Colors.indigo),
+                        insets: EdgeInsets.symmetric(horizontal:16.0)
+                    ),
+                    unselectedLabelColor: Colors.indigo,
+                    labelColor: Colors.indigo[900])),
+            home: HomeScaffold(title: appTitle)),
+    );
   }
 }
 
