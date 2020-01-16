@@ -5,8 +5,8 @@ class Idea {
   int feasibilityRating;
   int impactRating;
 
-  Idea(this.title, this.description, this.originalityRating,
-      this.feasibilityRating, this.impactRating);
+  Idea({ this.title, this.description, this.originalityRating,
+      this.feasibilityRating, this.impactRating });
 
   Idea.fromMap(Map snapshot, String title)
       : title = title ?? '',

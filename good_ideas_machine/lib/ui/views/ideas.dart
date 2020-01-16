@@ -17,7 +17,6 @@ class _IdeasPageState extends State<IdeasPage> {
   @override
   Widget build(BuildContext context) {
     final ideaProvider = Provider.of<IdeasManager>(context);
-
     return Scaffold(
       body: Center(
         child: Container(

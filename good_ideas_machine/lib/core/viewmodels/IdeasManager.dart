@@ -10,7 +10,6 @@ class IdeasManager extends ChangeNotifier {
 
   List<Idea> ideas;
 
-
   Future<List<Idea>> fetchIdeas() async {
     var result = await _dataManager.getDataCollection();
     ideas = result.documents
@@ -23,22 +22,23 @@ class IdeasManager extends ChangeNotifier {
     return _dataManager.streamDataCollection();
   }
 
-  Future<Idea> getIdeaById(String id) async {
-    var doc = await _dataManager.getDocumentById(id);
+  Future<Idea> getIdeaByTitle(String title) async {
+    var doc = await _dataManager.getDocumentByTitle(title);
     return  Idea.fromMap(doc.data, doc.documentID) ;
   }
 
-  Future removeIdea(String id) async{
-    await _dataManager.removeDocument(id) ;
-    return ;
-  }
-  Future updateIdea(Idea data,String id) async{
-    await _dataManager.updateDocument(data.toJson(), id) ;
+  Future removeIdea(String title) async{
+    await _dataManager.removeDocument(title) ;
     return ;
   }
 
-  Future addIdea(Idea data) async{
-    var result  = await _dataManager.addDocument(data.toJson()) ;
+  Future updateIdea(Idea data,String title) async{
+    await _dataManager.updateDocument(data.toJson(), title) ;
+    return ;
+  }
+
+  Future addIdea(Idea idea, String title) async{
+    await _dataManager.addDocument(idea.toJson(), title) ;
     return ;
 
   }
