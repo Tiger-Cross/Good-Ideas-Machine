@@ -36,9 +36,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: new Text("That's a Great Idea!"),
-          content: new Text("We'll keep it safe for you. If you fancy " +
-              "checking it out again, adding to it or viewing our stats on it" +
-              " head over to the ideas page on the left."),
+          content: new Text("Thanks! We'll keep it safe for you."),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Close"),

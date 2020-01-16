@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'IdeaCard.dart';
 
 class IdeasPage extends StatefulWidget {
 
@@ -6,34 +9,39 @@ class IdeasPage extends StatefulWidget {
   _IdeasPageState createState() => _IdeasPageState();
 }
 
-//// TODO: Use to get, edit and delete idea contents
-//void getData(){
-//  databaseReference.once().then((DataSnapshot snapshot) {
-//    print('Data : ${snapshot.value}');
-//  });
-//}
-//
-//void deleteData(){
-//  databaseReference.child('1').remove();
-//}
-//
-//void updateData(){
-//  databaseReference.child('1').update({
-//    'description': 'J2EE complete Reference'
-//  });
-//}
-
 class _IdeasPageState extends State<IdeasPage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Coming soon...")
-          ],
+        child: Container(
+          child:
+            StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance.collection('ideas').snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot>
+                snapshot) {
+                  if (snapshot.hasError) {
+                    return new Text('Error: ${snapshot.error}');
+                  }
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return new Text("You haven't got  any ideas yet. Why" +
+                          "not create one?");
+                    case ConnectionState.waiting:
+                      return new Text('Loading...');
+                    default:
+                      return new ListView(
+                        children: snapshot.data.documents
+                            .map((DocumentSnapshot document) {
+                          return new IdeaCard(
+                            title: document['title'],
+                            description: document['description'],
+                          );
+                        }).toList(),
+                      );
+                  }
+                })
         ),
       ),
 
