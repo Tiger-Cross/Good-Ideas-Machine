@@ -151,7 +151,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
               ),
             )),
       ),
-      floatingActionButton: Consumer<IdeasManager>(
+      floatingActionButton: _formKey.currentState.validate() ? Consumer<IdeasManager>(
         builder: (context, IdeasManager, child) {
           return FloatingActionButton(
             onPressed: () => (submitNewIdea(IdeasManager)),
@@ -159,7 +159,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
             child: Icon(Icons.check),
           );
         },
-      ),
+      ) : null,
     );
   }
 }
