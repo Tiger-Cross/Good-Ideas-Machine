@@ -38,4 +38,4 @@ lib/generated_plugin_registrant.dart
 
 # Google Services (firebase)
 **/google-services.json
-../GoogleService-Info.plist
+**/GoogleService-Info.plist
