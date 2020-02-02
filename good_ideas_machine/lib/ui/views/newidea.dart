@@ -151,15 +151,15 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
               ),
             )),
       ),
-      floatingActionButton: _formKey.currentState.validate() ? Consumer<IdeasManager>(
+      floatingActionButton: Consumer<IdeasManager>(
         builder: (context, IdeasManager, child) {
           return FloatingActionButton(
-            onPressed: () => (submitNewIdea(IdeasManager)),
+            onPressed: () => submitNewIdea(IdeasManager),
             tooltip: 'Record Idea',
             child: Icon(Icons.check),
           );
         },
-      ) : null,
+      ),
     );
   }
 }
